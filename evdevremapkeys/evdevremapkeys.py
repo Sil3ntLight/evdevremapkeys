@@ -31,7 +31,7 @@ from pathlib import Path
 
 import evdev
 import pyudev
-import websockets
+import socketio
 import yaml
 from evdev import InputDevice, UInput, ecodes
 from xdg import BaseDirectory
@@ -40,7 +40,7 @@ DEFAULT_RATE = .1  # seconds
 repeat_tasks = {}
 remapped_tasks = {}
 registered_devices = {}
-host_prev = "ws://127.0.0.1:8000"
+host_prev = "http://127.0.0.1:8000"
 websocket = None
 websocket_isOpen = False
 
@@ -48,17 +48,23 @@ async def websocket_init(host,command):
     global websocket
     global websocket_isOpen
     if (websocket_isOpen is False):
-        websocket = await websockets.connect(host)
+        websocket = socketio.AsyncClient()
+        await websocket.connect(host)
         websocket_isOpen = True
         host_prev = host
     if (websocket_isOpen and host != host_prev):
-        await websocket.close()
+        await websocket.disconnect()
         websocket_isOpen = False
         await websocket.connect(host)
         host_prev = host
 
-    for subcommand in command:
-        await websocket.send(subcommand)
+    length = len(command)
+    if length == 1:
+        await websocket.emit(command[0])
+    if length == 2:
+        await websocket.emit(command[0], command[1])
+    if length == 3:
+        await websocket.emit(command[0], command[1], command[2])
 
 async def handle_events(input: InputDevice, output: UInput, remappings, modifier_groups):
     active_group = {}
