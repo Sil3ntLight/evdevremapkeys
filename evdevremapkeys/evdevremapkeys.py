@@ -47,6 +47,7 @@ websocket_isOpen = False
 async def websocket_init(host,command):
     global websocket
     global websocket_isOpen
+    global host_prev
     if (websocket_isOpen is False):
         websocket = socketio.AsyncClient()
         await websocket.connect(host)
