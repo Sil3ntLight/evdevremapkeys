@@ -132,12 +132,18 @@ def remap_event(output, event, event_remapping):
         if remapping['code'] == 'SOCKET':
             if original_code == "REL_DIAL":
                 change = event.value - dial_pos
-                if change != -1 and change != 1:
-                        dial_pos = event.value
-                else:
-                    newCommand = command
-                    newCommand[1] += str(change) + " F" + str(speed)
-                    websocket_init(host, newCommand)
+                if dial_pos == 1 and event.value == 255:
+                    change = -1
+                if dial_pos == 255 and event.value == 1:
+                    change = 1
+                if change > 0:
+                    change = 1
+                if change < 0: 
+                    change = -1
+                
+                newCommand = command
+                newCommand[1] += str(change) + " F" + str(speed)
+                websocket_init(host, newCommand)
             elif original_code == "REL_WHEEL":
                 if event.value != 0:
                     newCommand = command
