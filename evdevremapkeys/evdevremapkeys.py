@@ -40,7 +40,7 @@ DEFAULT_RATE = .1  # seconds
 repeat_tasks = {}
 remapped_tasks = {}
 registered_devices = {}
-host_prev = "http://127.0.0.1:8000"
+host_prev = "ws://127.0.0.1:8000"
 websocket = None
 websocket_isOpen = False
 
@@ -48,17 +48,17 @@ async def websocket_init(host,command):
     global websocket
     global websocket_isOpen
     if (websocket_isOpen is False):
-        websocket = websockets.connect(host)
+        websocket = await websockets.connect(host)
         websocket_isOpen = True
         host_prev = host
     if (websocket_isOpen and host != host_prev):
-        websocket.close()
+        await websocket.close()
         websocket_isOpen = False
-        websocket.connect(host)
+        await websocket.connect(host)
         host_prev = host
 
     for subcommand in command:
-        websocket.send(subcommand)
+        await websocket.send(subcommand)
 
 async def handle_events(input: InputDevice, output: UInput, remappings, modifier_groups):
     active_group = {}
@@ -107,7 +107,7 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
 
 async def repeat_websocket(event, rate, host, command):
     while 1:
-        websocket_init(host, command)
+        await websocket_init(host, command)
         await asyncio.sleep(rate)
     
 
@@ -320,7 +320,7 @@ def normalize_value(mapping):
 
 def resolve_ecodes(by_name):
     def resolve_mapping(mapping):
-        if 'code' in mapping:
+        if 'code' in mapping and mapping['code'] != "SOCKET":
             mapping['code'] = ecodes.ecodes[mapping['code']]
         if 'type' in mapping:
             mapping['type'] = ecodes.ecodes[mapping['type']]
@@ -386,6 +386,9 @@ def register_device(device, loop: AbstractEventLoop):
                 extended.update([remapping['code']])
 
     caps[ecodes.EV_KEY] = list(extended)
+    if 'SOCKET' in caps[1]:
+        print("yep, removing SOCKET from stupid list thing...")
+        caps[1].remove('SOCKET')
     output = UInput(caps, name=device['output_name'])
     print('Registered: %s, %s, %s' % (input.name, input.path, input.phys), flush=True)
     task = loop.create_task(
