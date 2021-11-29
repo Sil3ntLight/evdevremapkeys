@@ -104,7 +104,7 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
         count -= 1
         for value in values:
             if event.code == "SOCKET" and event.value == on:
-                websocket_init(host, command)
+                await websocket_init(host, command)
             else:  
                 event.value = value
                 output.write_event(event)
@@ -120,7 +120,7 @@ async def repeat_websocket(event, rate, host, command):
 dial_pos = 0
 wheel_val = 0
 
-def remap_event(output, event, event_remapping):
+async def remap_event(output, event, event_remapping):
     for remapping in event_remapping:
         global dial_pos
         global wheel_val
@@ -149,7 +149,7 @@ def remap_event(output, event, event_remapping):
                 
                 newCommand = command
                 newCommand[1] += str(change) + " F" + str(speed)
-                websocket_init(host, newCommand)
+                await websocket_init(host, newCommand)
             elif original_code == "REL_WHEEL":
                 if event.value != 0:
                     newCommand = command
@@ -170,14 +170,14 @@ def remap_event(output, event, event_remapping):
                     if repeat_task:
                         repeat_task.cancel()
             else:
-                websocket_init(host, command)
+                await websocket_init(host, command)
         else:
 
             if not repeat and not delay:
                 for value in values:
                     event.value = value
                     if event.code == "SOCKET" and event.value == on:
-                            websocket_init(host, command)
+                            await websocket_init(host, command)
                     else:    
                         output.write_event(event)
                         output.syn()
@@ -199,7 +199,7 @@ def remap_event(output, event, event_remapping):
 
                     if remapped_tasks[original_code] == count:
                         if event.code == "SOCKET" and event.value == on:
-                            websocket_init(host, command)
+                            await websocket_init(host, command)
                         else: 
                             output.write_event(event)
                             output.syn()
