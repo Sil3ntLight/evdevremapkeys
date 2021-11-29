@@ -86,7 +86,7 @@ async def handle_events(input: InputDevice, output: UInput, remappings, modifier
                     active_group = {}
             else:
                 if event.code in active_mappings:
-                    remap_event(output, event, active_mappings[event.code])
+                    await remap_event(output, event, active_mappings[event.code])
                 else:
                     output.write_event(event)
                     output.syn()
