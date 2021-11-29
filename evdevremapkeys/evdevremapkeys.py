@@ -45,11 +45,7 @@ websocket = None
 websocket_isOpen = False
 ready = False
 
-@websocket.event
-async def connect():
-    global ready
-    print("connected!")
-    ready = True
+
 
 async def websocket_init(host,command):
     global websocket
@@ -61,11 +57,21 @@ async def websocket_init(host,command):
         await websocket.connect(host)
         websocket_isOpen = True
         host_prev = host
+        @websocket.event
+        async def connect():
+            global ready
+            print("connected!")
+            ready = True
     if (websocket_isOpen and host != host_prev):
         await websocket.disconnect()
         websocket_isOpen = False
         await websocket.connect(host)
         host_prev = host
+        @websocket.event
+        async def connect():
+            global ready
+            print("connected!")
+            ready = True
     
     while ready == False:
         await asyncio.sleep(1)
