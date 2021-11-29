@@ -23,24 +23,42 @@
 
 import argparse
 import asyncio
+import functools
+import signal
 from asyncio.events import AbstractEventLoop
 from collections.abc import Iterable
-import functools
 from pathlib import Path
-import signal
-
 
 import evdev
-from evdev import ecodes, InputDevice, UInput
 import pyudev
-from xdg import BaseDirectory
+import websockets
 import yaml
+from evdev import InputDevice, UInput, ecodes
+from xdg import BaseDirectory
 
 DEFAULT_RATE = .1  # seconds
 repeat_tasks = {}
 remapped_tasks = {}
 registered_devices = {}
+host_prev = "http://127.0.0.1:8000"
+websocket = None
+websocket_isOpen = False
 
+async def websocket_init(host,command):
+    global websocket
+    global websocket_isOpen
+    if (websocket_isOpen is False):
+        websocket = websockets.connect(host)
+        websocket_isOpen = True
+        host_prev = host
+    if (websocket_isOpen and host != host_prev):
+        websocket.close()
+        websocket_isOpen = False
+        websocket.connect(host)
+        host_prev = host
+
+    for subcommand in command:
+        websocket.send(subcommand)
 
 async def handle_events(input: InputDevice, output: UInput, remappings, modifier_groups):
     active_group = {}
@@ -73,64 +91,120 @@ async def handle_events(input: InputDevice, output: UInput, remappings, modifier
         input.close()
 
 
-async def repeat_event(event, rate, count, values, output):
+async def repeat_event(event, rate, count, values, output, host, command, on):
     if count == 0:
         count = -1
     while count != 0:
         count -= 1
         for value in values:
-            event.value = value
-            output.write_event(event)
-            output.syn()
+            if event.code == "SOCKET" and event.value == on:
+                websocket_init(host, command)
+            else:  
+                event.value = value
+                output.write_event(event)
+                output.syn()
         await asyncio.sleep(rate)
 
+async def repeat_websocket(event, rate, host, command):
+    while 1:
+        websocket_init(host, command)
+        await asyncio.sleep(rate)
+    
+
+dial_pos = 0
+wheel_val = 0
 
 def remap_event(output, event, event_remapping):
     for remapping in event_remapping:
+        global dial_pos
+        global wheel_val
         original_code = event.code
         event.code = remapping['code']
         event.type = remapping.get('type', None) or event.type
         values = remapping.get('value', None) or [event.value]
         repeat = remapping.get('repeat', False)
         delay = remapping.get('delay', False)
-        if not repeat and not delay:
-            for value in values:
-                event.value = value
-                output.write_event(event)
-                output.syn()
-        else:
-            key_down = event.value == 1
-            key_up = event.value == 0
-            count = remapping.get('count', 0)
+        host = remapping.get('host', host_prev)
+        command = remapping.get('command', ["gcode", "G0"])
+        on = remapping.get('on', 1)
+        speed = remapping.get('speed', 500)
 
-            if not (key_up or key_down):
-                return
-            if delay:
-                if original_code not in remapped_tasks or \
-                   remapped_tasks[original_code] == 0:
-                    if key_down:
-                        remapped_tasks[original_code] = count
+        if remapping['code'] == 'SOCKET':
+            if original_code == "REL_DIAL":
+                change = event.value - dial_pos
+                if change != -1 and change != 1:
+                        dial_pos = event.value
                 else:
-                    if key_down:
-                        remapped_tasks[original_code] -= 1
+                    newCommand = command
+                    newCommand[1] += str(change) + " F" + str(speed)
+                    websocket_init(host, newCommand)
+            elif original_code == "REL_WHEEL":
+                if event.value != 0:
+                    newCommand = command
+                    if(event.value < 0):
+                        newCommand[1] += "-0.1 F" + str(abs(event.value)*speed)
+                    else:
+                        newCommand[1] += "0.1 F" + str(abs(event.value)*speed)
+                    rate = remapping.get('rate', DEFAULT_RATE)
+                    repeat_task = repeat_tasks.pop(original_code, None)
+                    if repeat_task:
+                        repeat_task.cancel()
 
-                if remapped_tasks[original_code] == count:
-                    output.write_event(event)
-                    output.syn()
-            elif repeat:
-                # count > 0  - ignore key-up events
-                # count is 0 - repeat until key-up occurs
-                ignore_key_up = count > 0
-
-                if ignore_key_up and key_up:
-                    return
-                rate = remapping.get('rate', DEFAULT_RATE)
-                repeat_task = repeat_tasks.pop(original_code, None)
-                if repeat_task:
-                    repeat_task.cancel()
-                if key_down:
                     repeat_tasks[original_code] = asyncio.ensure_future(
-                        repeat_event(event, rate, count, values, output))
+                        repeat_websocket(event, rate, host, command))
+
+                else:
+                    repeat_task = repeat_tasks.pop(original_code, None)
+                    if repeat_task:
+                        repeat_task.cancel()
+            else:
+                websocket_init(host, command)
+        else:
+
+            if not repeat and not delay:
+                for value in values:
+                    event.value = value
+                    if event.code == "SOCKET" and event.value == on:
+                            websocket_init(host, command)
+                    else:    
+                        output.write_event(event)
+                        output.syn()
+            else:
+                key_down = event.value == 1
+                key_up = event.value == 0
+                count = remapping.get('count', 0)
+
+                if not (key_up or key_down):
+                    return
+                if delay:
+                    if original_code not in remapped_tasks or \
+                    remapped_tasks[original_code] == 0:
+                        if key_down:
+                            remapped_tasks[original_code] = count
+                    else:
+                        if key_down:
+                            remapped_tasks[original_code] -= 1
+
+                    if remapped_tasks[original_code] == count:
+                        if event.code == "SOCKET" and event.value == on:
+                            websocket_init(host, command)
+                        else: 
+                            output.write_event(event)
+                            output.syn()
+                elif repeat:
+                    # count > 0  - ignore key-up events
+                    # count is 0 - repeat until key-up occurs
+                    ignore_key_up = count > 0
+
+                    if ignore_key_up and key_up:
+                        return
+                    rate = remapping.get('rate', DEFAULT_RATE)
+                    repeat_task = repeat_tasks.pop(original_code, None)
+                    if repeat_task:
+                        repeat_task.cancel()
+                    if key_down:
+                        repeat_tasks[original_code] = asyncio.ensure_future(
+                            repeat_event(event, rate, count, values, output, host, command, on))
 
 
 # Parses yaml config file and outputs normalized configuration.
