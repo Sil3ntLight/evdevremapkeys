@@ -43,11 +43,19 @@ registered_devices = {}
 host_prev = "http://127.0.0.1:8000"
 websocket = None
 websocket_isOpen = False
+ready = False
+
+@websocket.event
+async def connect():
+    global ready
+    print("connected!")
+    ready = True
 
 async def websocket_init(host,command):
     global websocket
     global websocket_isOpen
     global host_prev
+    global ready
     if (websocket_isOpen is False):
         websocket = socketio.AsyncClient()
         await websocket.connect(host)
@@ -58,6 +66,9 @@ async def websocket_init(host,command):
         websocket_isOpen = False
         await websocket.connect(host)
         host_prev = host
+    
+    while ready == False:
+        await asyncio.sleep(1)
 
     length = len(command)
     if length == 1:
