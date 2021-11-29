@@ -60,11 +60,11 @@ async def websocket_init(host,command):
 
     length = len(command)
     if length == 1:
-        await websocket.emit(command[0])
+        await websocket.emit('command', '/dev/ttyACM0', command[0])
     if length == 2:
-        await websocket.emit(command[0], command[1])
+        await websocket.emit('command', '/dev/ttyACM0', command[0], command[1])
     if length == 3:
-        await websocket.emit(command[0], command[1], command[2])
+        await websocket.emit('command', '/dev/ttyACM0', command[0], command[1], command[2])
 
 async def handle_events(input: InputDevice, output: UInput, remappings, modifier_groups):
     active_group = {}
