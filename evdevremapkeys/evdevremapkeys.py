@@ -169,9 +169,9 @@ def remap_event(output, event, event_remapping):
                 if event.value > 1 or event.value < -1:
                     newdist = (abs(event.value)*0.4*(abs(event.value)-2)+distance)
                     if(event.value < -1):
-                        newstr = command+str(-1*newdist)+" F"+str((abs(event.value)-2)*speed)
+                        newstr = command+str(-1*newdist)+" F"+str((abs(event.value)-1)*speed)
                     elif (event.value > 1):
-                        newstr = command+str(newdist)+" F"+str((abs(event.value)-2)*speed)
+                        newstr = command+str(newdist)+" F"+str((abs(event.value)-1)*speed)
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
                     rate = (0.5*newdist*60/((abs(event.value)-1)*speed))
