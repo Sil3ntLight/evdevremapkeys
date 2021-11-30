@@ -38,7 +38,7 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 X"
         speed: 2000
-        distances: [0.1, 0, 0, 0, 0, 0]
+        distance: 0.1
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
@@ -52,7 +52,7 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Y"
         speed: 2000
-        distances: [0.01, 0, 0, 0, 0, 0]
+        distance: 0.1
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
@@ -66,7 +66,7 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Z"
         speed: 2000
-        distances: [0.01, 0, 0, 0, 0, 0]
+        distance: 0.1
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
