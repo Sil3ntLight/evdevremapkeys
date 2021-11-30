@@ -125,10 +125,15 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
                 output.syn()
         await asyncio.sleep(rate)
 
+keepgoing = 0
+
+
 async def repeat_websocket(event, rate, host, command):
-    while 1:
+    global keepgoing
+    while keepgoing:
         websocket_init(host, command, "gcode")
-        await asyncio.sleep(rate)
+        
+        #await asyncio.sleep(rate)
     
 
 dial_pos = 0
@@ -138,6 +143,7 @@ def remap_event(output, event, event_remapping):
     for remapping in event_remapping:
         global dial_pos
         global wheel_val
+        global keepgoing
         original_code = event.code
         event.code = remapping['code']
         event.type = remapping.get('type', None) or event.type
@@ -168,6 +174,7 @@ def remap_event(output, event, event_remapping):
                     websocket_init(host, newstr, "gcode")
 
             if original_code == 8:
+                keepgoing = 0
                 websocket_init(host, "!%", "special")
                 # repeat_task = repeat_tasks.pop(original_code, None)
                 # if repeat_task:
@@ -181,8 +188,9 @@ def remap_event(output, event, event_remapping):
                         newstr = command+"-"+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
+                    keepgoing = 1
+                    repeat_websocket(event, rate, host, newstr)
                     
-                    websocket_init(host, newstr, "gcode")
                     # #rate = remapping.get('rate', DEFAULT_RATE)
                     # rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
                         
