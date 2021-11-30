@@ -170,7 +170,7 @@ def remap_event(output, event, event_remapping):
                         newstr = command+str(newdist)+" F"+str((abs(event.value)-2)*speed)
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = 0.5*(newdist*60/((abs(event.value)-2)*speed))
+                    rate = (newdist*60/((abs(event.value)-2)*speed))
                     repeat_task = repeat_tasks.pop(original_code, None)
                     if repeat_task:
                         repeat_task.cancel()
