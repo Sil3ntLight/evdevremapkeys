@@ -166,9 +166,9 @@ def remap_event(output, event, event_remapping):
                 if event.value > 1 or event.value < -1:
 
                     if(event.value < -1):
-                        newstr = command+str(-1*(abs(event.value)*0.3*(abs(event.value)-2)+distance))+" F"+str(abs(event.value)*speed)
+                        newstr = command+str(-1*(abs(event.value)*0.4*(abs(event.value)-2)+distance))+" F"+str(abs(event.value)*speed)
                     elif (event.value > 1):
-                        newstr = command+str(distance*event.value)+" F"+str(abs(event.value)*speed)
+                        newstr = command+str((abs(event.value)*0.4*(abs(event.value)-2)+distance))+" F"+str(abs(event.value)*speed)
                     print(newstr)
                     rate = remapping.get('rate', DEFAULT_RATE)
                     repeat_task = repeat_tasks.pop(original_code, None)
