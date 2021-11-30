@@ -168,11 +168,10 @@ def remap_event(output, event, event_remapping):
                     websocket_init(host, newstr, "gcode")
 
             if original_code == 8:
-                # websocket_init(host, "!", "gcode")
                 websocket_init(host, "!%", "special")
-                repeat_task = repeat_tasks.pop(original_code, None)
-                if repeat_task:
-                    repeat_task.cancel()
+                # repeat_task = repeat_tasks.pop(original_code, None)
+                # if repeat_task:
+                #     repeat_task.cancel()
                 
                 
                 
@@ -182,14 +181,15 @@ def remap_event(output, event, event_remapping):
                         newstr = command+"-"+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
-
-                    #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
+                    
+                    websocket_init(host, newstr, "gcode")
+                    # #rate = remapping.get('rate', DEFAULT_RATE)
+                    # rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
-                    repeat_tasks[original_code] = asyncio.ensure_future(
-                        repeat_websocket(event, rate, host, newstr))
+                    # repeat_tasks[original_code] = asyncio.ensure_future(
+                    #     repeat_websocket(event, rate, host, newstr))
             else:
                 websocket_init(host, command, "single")
         else:
