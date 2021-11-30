@@ -193,7 +193,7 @@ def remap_event(output, event, event_remapping):
 
                     
                    
-                    rate = 0.3*(newdist*60/(speeds[abs(event.value)-2]))
+                    rate = 0.1*(newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
