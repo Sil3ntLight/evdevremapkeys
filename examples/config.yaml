@@ -24,12 +24,12 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 A"
         speed: 120
-        distances: [0.01]
+        distance: 0.01
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 A"
-        speed: 10
+        speeds: [1, 10, 30, 60, 120, 240]
         distances: [0.01, 0.1, 1, 5, 10, 20]
         
     modX:
@@ -38,12 +38,12 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 X"
         speed: 2000
-        distances: [0.1]
+        distances: [0.1, 0, 0, 0, 0, 0]
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 X"
-        speed: 500 
+        speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
         
     modY:
@@ -52,12 +52,12 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Y"
         speed: 2000
-        distances: [0.1]
+        distances: [0.01, 0, 0, 0, 0, 0]
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Y"
-        speed: 500
+        speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
         
     modZ:
@@ -66,12 +66,12 @@ devices:
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Z"
         speed: 2000
-        distances: [0.1]
+        distances: [0.01, 0, 0, 0, 0, 0]
       REL_WHEEL:
       - code: SOCKET
         host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
         command: "G91 G1 Z"
-        speed: 500
+        speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
         
 

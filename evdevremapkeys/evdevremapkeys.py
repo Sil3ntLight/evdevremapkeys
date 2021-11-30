@@ -146,7 +146,8 @@ def remap_event(output, event, event_remapping):
         command = remapping.get('command', None)
         on = remapping.get('on', 1)
         speed = remapping.get('speed', 500)
-        distances = remapping.get('distances', [0.1])
+        speeds = remapping.get('speeds', [200, 500, 1000, 2000, 3500, 4000])
+        distances = remapping.get('distances', [0.01, 0.1, 1, 5, 10, 20])
         if event.code == 'SOCKET':
             if original_code == 7:
                 change = event.value - dial_pos
@@ -171,14 +172,14 @@ def remap_event(output, event, event_remapping):
                 
                 
                 if event.value > 1 or event.value < -1:
-                    newdist = (((abs(event.value)-2)^2)+distances[(event.value-2)])
+                    newdist = (((abs(event.value)-2)^2)+distances[(abs(event.value)-2)])
                     if(event.value < -1):
-                        newstr = command+"-"+str(newdist)+" F"+str((abs(event.value)-1)*speed)
+                        newstr = command+"-"+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     elif (event.value > 1):
-                        newstr = command+str(newdist)+" F"+str((abs(event.value)-1)*speed)
+                        newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (newdist*60/((abs(event.value)-1)*speed))
+                    rate = (newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
