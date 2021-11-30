@@ -96,8 +96,8 @@ async def handle_events(input: InputDevice, output: UInput, remappings, modifier
                     active_group['name'] = \
                         active_mappings[event.code][0]['modifier_group']
                     active_group['code'] = event.code
-                elif event.value == 0:
-                    active_group = {}
+                # elif event.value == 0:
+                #     active_group = {}
             else:
                 if event.code in active_mappings:
                     remap_event(output, event, active_mappings[event.code])
