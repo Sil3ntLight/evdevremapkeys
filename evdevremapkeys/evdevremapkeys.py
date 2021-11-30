@@ -133,7 +133,7 @@ async def repeat_websocket(event, rate, host, command):
     while keepgoing:
         websocket_init(host, command, "gcode")
         
-        #await asyncio.sleep(rate)
+        await asyncio.sleep(rate)
     
 
 dial_pos = 0
