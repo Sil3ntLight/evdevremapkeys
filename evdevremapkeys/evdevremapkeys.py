@@ -164,8 +164,8 @@ def remap_event(output, event, event_remapping):
                 websocket_init(host, newstr, "gcode")
 
             if original_code == 8:
-                #websocket_init(host, "!", "single")
-                websocket_init(host, "%", "single")
+                #websocket_init(host, "!", "gcode")
+                websocket_init(host, "%", "gcode")
                 repeat_task = repeat_tasks.pop(original_code, None)
                 if repeat_task:
                     repeat_task.cancel()
