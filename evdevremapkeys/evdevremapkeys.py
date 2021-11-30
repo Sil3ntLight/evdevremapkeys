@@ -128,7 +128,7 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
 keepgoing = 0
 
 
-async def repeat_websocket(event, rate, host, command):
+async def repeat_websocket(event, host, command):
     global keepgoing
     while keepgoing:
         websocket_init(host, command, "gcode")
@@ -189,7 +189,7 @@ def remap_event(output, event, event_remapping):
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     keepgoing = 1
-                    repeat_websocket(event, rate, host, newstr)
+                    repeat_websocket(event, host, newstr)
                     
                     # #rate = remapping.get('rate', DEFAULT_RATE)
                     # rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
