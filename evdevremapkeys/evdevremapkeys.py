@@ -116,7 +116,7 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
         count -= 1
         for value in values:
             if event.code == "SOCKET" and event.value == on:
-                websocket_init(host, command)
+                pass # websocket_init(host, command)
             else:  
                 event.value = value
                 output.write_event(event)
@@ -162,6 +162,10 @@ def remap_event(output, event, event_remapping):
                 newstr = command+str(change*distance)+" F"+str(speed)
                 websocket_init(host, newstr, "gcode")
             if original_code == 8:
+                repeat_task = repeat_tasks.pop(original_code, None)
+                if repeat_task:
+                    repeat_task.cancel()
+                
                 if event.value > 1 or event.value < -1:
                     newdist = (abs(event.value)*0.4*(abs(event.value)-2)+distance)
                     if(event.value < -1):
@@ -170,21 +174,12 @@ def remap_event(output, event, event_remapping):
                         newstr = command+str(newdist)+" F"+str((abs(event.value)-2)*speed)
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (2*newdist*60/((abs(event.value)-1)*speed))
-                    repeat_task = repeat_tasks.pop(original_code, None)
-                    while repeat_task:
-                        repeat_task.cancel()
-                        repeat_task = repeat_tasks.pop(original_code, None)
+                    rate = (0.5*newdist*60/((abs(event.value)-1)*speed))
+                        
                         
 
                     repeat_tasks[original_code] = asyncio.ensure_future(
                         repeat_websocket(event, rate, host, newstr))
-
-                else:
-                    repeat_task = repeat_tasks.pop(original_code, None)
-                    while repeat_task:
-                        repeat_task.cancel()
-                        repeat_task = repeat_tasks.pop(original_code, None)
             else:
                 websocket_init(host, command, "single")
         else:
