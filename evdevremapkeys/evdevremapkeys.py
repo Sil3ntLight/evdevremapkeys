@@ -184,7 +184,7 @@ def remap_event(output, event, event_remapping):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (0.1*newdist*60/(speeds[abs(event.value)-2]))
+                    rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
