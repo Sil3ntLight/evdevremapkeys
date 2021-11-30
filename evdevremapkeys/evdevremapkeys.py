@@ -76,6 +76,8 @@ def websocket_init(host,command,type):
         websocket.emit('command', ('/dev/ttyACM0', command))
     if type == "gcode" and ready == True:
        websocket.emit('command', ('/dev/ttyACM0', 'gcode', command))
+    if type == "special" and ready == True:
+       websocket.emit('write', ('/dev/ttyACM0', command))
     
 
 async def handle_events(input: InputDevice, output: UInput, remappings, modifier_groups):
@@ -166,7 +168,7 @@ def remap_event(output, event, event_remapping):
 
             if original_code == 8:
                 # websocket_init(host, "!", "gcode")
-                websocket_init(host, "!\n%\n", "gcode")
+                websocket_init(host, "!%", "special")
                 repeat_task = repeat_tasks.pop(original_code, None)
                 if repeat_task:
                     repeat_task.cancel()
