@@ -165,11 +165,11 @@ def remap_event(output, event, event_remapping):
                 print(newstr)
                 websocket_init(host, newstr, "gcode")
             if original_code == 8:
-                if event.value != 0:
+                if event.value > 1 or event.value < -1:
 
-                    if(event.value < 0):
+                    if(event.value < -1):
                         newstr = command+"-1 F"+str(abs(event.value)*speed)
-                    else:
+                    elif (event.value > 1):
                         newstr = command+"1 F"+str(abs(event.value)*speed)
                     print(newstr)
                     rate = remapping.get('rate', DEFAULT_RATE)
