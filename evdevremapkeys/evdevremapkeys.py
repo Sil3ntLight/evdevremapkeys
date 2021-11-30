@@ -128,7 +128,7 @@ async def repeat_event(event, rate, count, values, output, host, command, on):
 keepgoing = 0
 
 
-async def repeat_websocket(event, host, command):
+async def repeat_websocket(event, rate, host, command):
     global keepgoing
     while keepgoing:
         websocket_init(host, command, "gcode")
