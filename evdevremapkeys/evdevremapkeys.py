@@ -129,8 +129,8 @@ keepgoing = 0
 
 
 async def repeat_websocket(event, rate, host, command):
-    global keepgoing
-    while keepgoing:
+
+    while 1:
         websocket_init(host, command, "gcode")
         
         await asyncio.sleep(rate)
@@ -193,7 +193,7 @@ def remap_event(output, event, event_remapping):
 
                     
                    
-                    rate = 0.001 # (1.2*newdist*60/(speeds[abs(event.value)-2]))
+                    rate = 0.01 # (1.2*newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
