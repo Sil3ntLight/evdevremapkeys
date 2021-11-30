@@ -146,7 +146,7 @@ def remap_event(output, event, event_remapping):
         command = remapping.get('command', None)
         on = remapping.get('on', 1)
         speed = remapping.get('speed', 500)
-        distance = remapping.get('distance', 1)
+        distances = remapping.get('distances', [0.1])
         if event.code == 'SOCKET':
             if original_code == 7:
                 change = event.value - dial_pos
@@ -159,22 +159,26 @@ def remap_event(output, event, event_remapping):
                 if change < 0: 
                     change = -1
                 dial_pos = event.value
-                newstr = command+str(change*distance)+" F"+str(speed)
+                newstr = command+str(change*distances[0])+" F"+str(speed)
                 websocket_init(host, newstr, "gcode")
+
             if original_code == 8:
+                websocket_init(host, "%", "single")
                 repeat_task = repeat_tasks.pop(original_code, None)
                 if repeat_task:
                     repeat_task.cancel()
                 
+                
+                
                 if event.value > 1 or event.value < -1:
-                    newdist = (abs(event.value)*0.4*(abs(event.value)-2)+distance)
+                    newdist = (((abs(event.value)-2)^2)+distances[(event.value-2)])
                     if(event.value < -1):
-                        newstr = command+str(-1*newdist)+" F"+str((abs(event.value)-1)*speed)
+                        newstr = command+"-"+str(newdist)+" F"+str((abs(event.value)-1)*speed)
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((abs(event.value)-1)*speed)
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (0.5*newdist*60/((abs(event.value)-1)*speed))
+                    rate = (newdist*60/((abs(event.value)-1)*speed))
                         
                         
 
