@@ -170,10 +170,11 @@ def remap_event(output, event, event_remapping):
                         newstr = command+str(newdist)+" F"+str((abs(event.value)-2)*speed)
 
                     #rate = remapping.get('rate', DEFAULT_RATE)
-                    rate = (newdist*60/((abs(event.value)-1)*speed))
+                    rate = 1.2*(newdist*60/((abs(event.value)-1)*speed))
                     repeat_task = repeat_tasks.pop(original_code, None)
                     if repeat_task:
                         repeat_task.cancel()
+                        
 
                     repeat_tasks[original_code] = asyncio.ensure_future(
                         repeat_websocket(event, rate, host, newstr))
