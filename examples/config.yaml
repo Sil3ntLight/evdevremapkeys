@@ -31,6 +31,18 @@ devices:
         command: "G91 G1 A"
         speeds: [1, 10, 30, 60, 120, 240]
         distances: [0.01, 0.1, 1, 5, 10, 20]
+      BTN_4:
+      - modifier_group: modA
+      BTN_5:
+      - modifier_group: modX
+      BTN_6:
+      - modifier_group: modY
+      BTN_7:
+      - modifier_group: modZ
+      BTN_8:
+      - code: SOCKET
+        host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
+        command: "homing"
         
     modX:
       REL_DIAL:
@@ -45,7 +57,19 @@ devices:
         command: "G91 G1 X"
         speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
-        
+      BTN_4:
+      - modifier_group: modA
+      BTN_5:
+      - modifier_group: modX
+      BTN_6:
+      - modifier_group: modY
+      BTN_7:
+      - modifier_group: modZ
+      BTN_8:
+      - code: SOCKET
+        host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
+        command: "homing"
+
     modY:
       REL_DIAL:
       - code: SOCKET
@@ -59,6 +83,18 @@ devices:
         command: "G91 G1 Y"
         speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
+      BTN_4:
+      - modifier_group: modA
+      BTN_5:
+      - modifier_group: modX
+      BTN_6:
+      - modifier_group: modY
+      BTN_7:
+      - modifier_group: modZ
+      BTN_8:
+      - code: SOCKET
+        host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
+        command: "homing"
         
     modZ:
       REL_DIAL:
@@ -73,6 +109,18 @@ devices:
         command: "G91 G1 Z"
         speeds: [200, 500, 1000, 2000, 3500, 4000]
         distances: [0.01, 0.1, 1, 5, 10, 20]
+      BTN_4:
+      - modifier_group: modA
+      BTN_5:
+      - modifier_group: modX
+      BTN_6:
+      - modifier_group: modY
+      BTN_7:
+      - modifier_group: modZ
+      BTN_8:
+      - code: SOCKET
+        host: "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
+        command: "homing"
         
 
 
