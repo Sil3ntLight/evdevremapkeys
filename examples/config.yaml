@@ -31,7 +31,7 @@ devices:
         command: "G91 G1 A"
         speed: 10
         distance: 0.1
-        rate: 0.02
+        rate: 0.05
     modX:
       REL_DIAL:
       - code: SOCKET
@@ -45,7 +45,7 @@ devices:
         command: "G91 G1 X"
         speed: 500 #options are 1 - keydown, 0 - keyup, 2- both keydown and up
         distance: 0.1
-        rate: 0.02
+        rate: 0.05
     modY:
       REL_DIAL:
       - code: SOCKET
@@ -59,7 +59,7 @@ devices:
         command: "G91 G1 Y"
         speed: 500 #options are 1 - keydown, 0 - keyup, 2- both keydown and up
         distance: 0.1
-        rate: 0.02
+        rate: 0.05
     modZ:
       REL_DIAL:
       - code: SOCKET
@@ -73,7 +73,7 @@ devices:
         command: "G91 G1 Z"
         speed: 500 #options are 1 - keydown, 0 - keyup, 2- both keydown and up
         distance: 0.1
-        rate: 0.02
+        rate: 0.05
 
 
 
