@@ -157,6 +157,7 @@ def remap_event(output, event, event_remapping):
         speeds = remapping.get('speeds', [200, 500, 1000, 2000, 3500, 4000])
         distances = remapping.get('distances', [0.01, 0.1, 1, 5, 10, 20])
         distance = remapping.get('distance', 0.1)
+        rate = remapping.get('rate', DEFAULT_RATE)
         if event.code == 'SOCKET':
             if original_code == 7 and original_code != 8:
                 change = event.value - dial_pos
@@ -176,9 +177,9 @@ def remap_event(output, event, event_remapping):
             if original_code == 8:
                 keepgoing = 0
                 websocket_init(host, "!%", "special")
-                # repeat_task = repeat_tasks.pop(original_code, None)
-                # if repeat_task:
-                #     repeat_task.cancel()
+                repeat_task = repeat_tasks.pop(original_code, None)
+                if repeat_task:
+                    repeat_task.cancel()
                 
                 
                 
@@ -189,15 +190,15 @@ def remap_event(output, event, event_remapping):
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     keepgoing = 1
-                    repeat_websocket(event, host, newstr)
+
                     
-                    # #rate = remapping.get('rate', DEFAULT_RATE)
-                    # rate = (1.2*newdist*60/(speeds[abs(event.value)-2]))
+                   
+                    rate = 0.001 # (1.2*newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
-                    # repeat_tasks[original_code] = asyncio.ensure_future(
-                    #     repeat_websocket(event, rate, host, newstr))
+                    repeat_tasks[original_code] = asyncio.ensure_future(
+                        repeat_websocket(event, rate, host, newstr))
             else:
                 websocket_init(host, command, "single")
         else:
