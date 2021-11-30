@@ -94,8 +94,8 @@ async def handle_events(input: InputDevice, output: UInput, remappings, modifier
                     active_group['name'] = \
                         active_mappings[event.code][0]['modifier_group']
                     active_group['code'] = event.code
-                elif event.value == 0:
-                    active_group = {}
+                # elif event.value == 0:
+                #     active_group = {}
             else:
                 if event.code in active_mappings:
                     remap_event(output, event, active_mappings[event.code])
@@ -149,7 +149,7 @@ def remap_event(output, event, event_remapping):
 #        print(event.code)
         if event.code == 'SOCKET':
             print(original_code)
-            if original_code == 33 or original_code == 33:
+            if original_code == 7:
                 change = event.value - dial_pos
                 if dial_pos == 1 and event.value == 255:
                     change = -1
@@ -162,23 +162,23 @@ def remap_event(output, event, event_remapping):
                 #print(str(command[0]))
                 
                 newstr = command+str(change)+" F"+str(speed)
- #               print('newcommand: ', newCommand[1])
+                print(newstr)
                 websocket_init(host, newstr, "gcode")
-            if original_code == 7 or original_code == 8:
+            if original_code == 8:
                 if event.value != 0:
-                    newCommand = command
+
                     if(event.value < 0):
-                        newCommand = command+ "-1 F" + str(abs(event.value)*speed)
+                        newstr = command+"-1 F"+str(abs(event.value)*speed)
                     else:
-                        newCommand = command+ "1 F" + str(abs(event.value)*speed)
-#                    print(str(newCommand))
+                        newstr = command+"1 F"+str(abs(event.value)*speed)
+                    print(newstr)
                     rate = remapping.get('rate', DEFAULT_RATE)
                     repeat_task = repeat_tasks.pop(original_code, None)
                     if repeat_task:
                         repeat_task.cancel()
 
                     repeat_tasks[original_code] = asyncio.ensure_future(
-                        repeat_websocket(event, rate, host, newCommand))
+                        repeat_websocket(event, rate, host, newstr))
 
                 else:
                     repeat_task = repeat_tasks.pop(original_code, None)
