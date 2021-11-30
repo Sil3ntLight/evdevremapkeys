@@ -146,9 +146,8 @@ def remap_event(output, event, event_remapping):
         command = remapping.get('command', None)
         on = remapping.get('on', 1)
         speed = remapping.get('speed', 500)
-#        print(event.code)
+        distance = remapping.get('distance', 1)
         if event.code == 'SOCKET':
-            print(original_code)
             if original_code == 7:
                 change = event.value - dial_pos
                 if dial_pos == 1 and event.value == 255:
@@ -159,18 +158,17 @@ def remap_event(output, event, event_remapping):
                     change = 1
                 if change < 0: 
                     change = -1
-                #print(str(command[0]))
-                
-                newstr = command+str(change)+" F"+str(speed)
+                dial_pos = event.value
+                newstr = command+str(change*distance)+" F"+str(speed)
                 print(newstr)
                 websocket_init(host, newstr, "gcode")
             if original_code == 8:
                 if event.value > 1 or event.value < -1:
 
                     if(event.value < -1):
-                        newstr = command+"-1 F"+str(abs(event.value)*speed)
+                        newstr = command+str(-1*(abs(event.value)*0.3*(abs(event.value)-2)+distance))+" F"+str(abs(event.value)*speed)
                     elif (event.value > 1):
-                        newstr = command+"1 F"+str(abs(event.value)*speed)
+                        newstr = command+str(distance*event.value)+" F"+str(abs(event.value)*speed)
                     print(newstr)
                     rate = remapping.get('rate', DEFAULT_RATE)
                     repeat_task = repeat_tasks.pop(original_code, None)
