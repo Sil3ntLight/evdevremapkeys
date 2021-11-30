@@ -175,7 +175,7 @@ def remap_event(output, event, event_remapping):
                     websocket_init(host, newstr, "gcode")
 
             if original_code == 8:
-                keepgoing = 0
+
                 websocket_init(host, "!%", "special")
                 repeat_task = repeat_tasks.pop(original_code, None)
                 if repeat_task:
@@ -184,16 +184,16 @@ def remap_event(output, event, event_remapping):
                 
                 
                 if event.value > 1 or event.value < -1:
-                    newdist = (((abs(event.value)-2)^2)+distances[(abs(event.value)-2)])
+                    newdist = distances[(abs(event.value)-2)]
                     if(event.value < -1):
                         newstr = command+"-"+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
                     elif (event.value > 1):
                         newstr = command+str(newdist)+" F"+str((speeds[abs(event.value)-2]))
-                    keepgoing = 1
+
 
                     
                    
-                    rate = 0.1*(newdist*60/(speeds[abs(event.value)-2]))
+                    rate = 0.8*(newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
