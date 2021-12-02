@@ -40,7 +40,7 @@ DEFAULT_RATE = .1  # seconds
 repeat_tasks = {}
 remapped_tasks = {}
 registered_devices = {}
-host_prev = "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBhZmM1NTkyLTQ5MzgtNDRiNC1iNzk0LTVmMmUxZjkzN2NjNyIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODIxODUyMSwiZXhwIjoxNjQwODEwNTIxfQ.TTbW7zojKi6m63AZfeVsk1x9tBMyL5XAYxjni16opNg"
+host_prev = "ws://127.0.0.1:8000/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZiZGVkOTVhLTI5NGYtNDI1NC1hNTRlLTRlMmQ2YmM3Y2FlYiIsIm5hbWUiOiJqb3JlbiIsImlhdCI6MTYzODQ2MzUwMSwiZXhwIjoxNjQxMDU1NTAxfQ.7PRF94xyDnKJ1fkr0Lxk6pUwPj5U6c1wZFB8GA84DTs"
 websocket = socketio.Client()
 
 websocket_isOpen = False
@@ -193,7 +193,7 @@ def remap_event(output, event, event_remapping):
 
                     
                    
-                    rate = (newdist*60/(speeds[abs(event.value)-2]))
+                    rate = 0.8*(newdist*60/(speeds[abs(event.value)-2]))
                         
                         
 
